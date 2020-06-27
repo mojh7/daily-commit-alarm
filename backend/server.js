@@ -5,6 +5,13 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 3002;
 const route = require('./routes/index');
 
+var schedule = require('node-scheduler');
+
+
+var scheduler = schedule.scheduleJob("5 * * * * *", function() {
+    console.log('schedule test');
+});
+
 //app.use(cors());
 
 app.use(bodyParser.json());
