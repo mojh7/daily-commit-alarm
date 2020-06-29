@@ -4,11 +4,13 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3002;
 const route = require('./routes/index');
+const github_route = require('./routes/github');
 const db_config = require(__dirname + '/database.js');
 const connection = db_config.init();
 db_config.connect(connection);
 app.use(bodyParser.json());
 app.use('/api', route);
+app.use('/github', github_route);
 //var schedule = require('node-schedule');
 
 /*
