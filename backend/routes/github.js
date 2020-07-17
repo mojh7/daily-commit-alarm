@@ -25,8 +25,12 @@ function printAllGitEvents(body){
     let bodyLength = Object.keys(body).length
     console.log(bodyLength);
     for(var i = 0; i < bodyLength; i++){
-        if('PushEvent' == body[i].type || 'PullRequestEvent' == body[i].type){
-            console.log(body[i].id + " msg : " + body[i].payload.commits[0].message + ", created_at : " + body[i].created_at);
+        if('PushEvent' == body[i].type){
+            console.log(i + ", type = " + body[i].type + " id : "  + body[i].id + ", created_at : " + body[i].created_at);
+            //  + " msg : " + body[i].payload.commits[0].message + 
+        } else if('PullRequestEvent' == body[i].type){
+            console.log(i + ", type = " + body[i].type + " id : "  + body[i].id + ", created_at : " + body[i].created_at);
+            //console.log(i + ", " + body[i].id + " title : " + body[i].payload.pull_request.title + ", created_at : " + body[i].created_at);
         }
     }
 }
