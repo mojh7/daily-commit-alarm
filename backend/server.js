@@ -16,12 +16,23 @@ app.use('/api', route);
 app.use('/github', github_route);
 app.use('/slack', slack_route);
 
-app.get('/', (req, res) =>
-    res.json({test:'123'})
-);
+
+function test(){
+  var today = new Date();  // GMT시간
+  //var _utc = new Date(_gmt.getTime() + (_gmt.getTimezoneOffset() * 60000));  // UTC 시간으로 변환
+  console.log(today);
+  //console.log(_utc);
+}
+
+test()
+
+app.get('/', (req, res) => {
+  //test(),
+  res.json({test:'123'})
+});
 
 app.listen(port, ()=>{
-    console.log(`express is running on ${port}`);
+  console.log(`express is running on ${port}`);
 });
 
 //var schedule = require('node-schedule');
