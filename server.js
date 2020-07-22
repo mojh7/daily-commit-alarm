@@ -3,31 +3,14 @@ const app = express();
 //const cors = require('cors');
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3002;
-const route = require('./routes/index');
 const github_route = require('./routes/github');
 const slack_route = require('./routes/slack');
 
-//const db_config = require(__dirname + '/database.js');
-//const connection = db_config.init();
-//db_config.connect(connection);
-
 app.use(bodyParser.json());
-app.use('/api', route);
 app.use('/github', github_route);
 app.use('/slack', slack_route);
 
-
-function test(){
-  var today = new Date();  // GMT시간
-  //var _utc = new Date(_gmt.getTime() + (_gmt.getTimezoneOffset() * 60000));  // UTC 시간으로 변환
-  console.log(today);
-  //console.log(_utc);
-}
-
-test()
-
 app.get('/', (req, res) => {
-  //test(),
   res.json({test:'123'})
 });
 
@@ -50,12 +33,3 @@ var scheduler3 = schedule.scheduleJob("5,10,15,20,25,30 * * * * *", function() {
 */
 
 //app.use(cors());
-
-/*app.get('/db-test', function(req, res) {
-    var sql = 'SELECT * FROM test_table';
-    connection.query(sql, function(err, rows){
-        console.log(rows);
-        res.json(rows);
-    })
-    console.log(sql);
-})*/

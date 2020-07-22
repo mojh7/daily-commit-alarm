@@ -23,15 +23,20 @@ router.get('/', (req, res) =>
 
 function printAllGitEvents(body){
   let bodyLength = Object.keys(body).length;
-  console.log(bodyLength);
+  let today = new Date();
+  today = new Date(today.getTime() - (((((today.getHours()) * 60) + today.getMinutes()) * 60) + today.getSeconds()) * 1000);
+  console.log("today : " + today + ", " + today.getTime() + ", " + today.getMonth());
+  let todayStr = today.getFullYear() + '년 ' + (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
   for(var i = 0; i < bodyLength; i++){
-    if('PushEvent' == body[i].type){
-      console.log(i + ", type = " + body[i].type + " id : "  + body[i].id + ", created_at : " + body[i].created_at);
-      //  + " msg : " + body[i].payload.commits[0].message + 
-      console.log((gmt < body[i].created_at));
-    } else if('PullRequestEvent' == body[i].type){
-      console.log(i + ", type = " + body[i].type + " id : "  + body[i].id + ", created_at : " + body[i].created_at);
-      //console.log(i + ", " + body[i].id + " title : " + body[i].payload.pull_request.title + ", created_at : " + body[i].created_at);
+    let createdEventDate = new Date(body[i].created_at);
+    if(today.getTime() <= createdEventDate.getTime()){
+      if('PushEvent' == body[i].type || 'PullRequestEvent' == body[i].type){
+        console.log(todayStr + ' : 1일 1커밋 완료');
+        break;
+      }
+    }else {
+      console.log(todayStr + ' : 1일 1커밋 미완료');
+      break;
     }
   }
 }
