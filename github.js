@@ -8,53 +8,38 @@ const getOptions = {
   }
 }
 
-let events = new Array();
-
-function printAllGitEvents(body){
-  let bodyLength = Object.keys(body).length;
-  let today = new Date();
-  today = new Date(today.getTime() - (((((today.getHours()) * 60) + today.getMinutes()) * 60) + today.getSeconds()) * 1000);
-  console.log("today : " + today + ", " + today.getTime() + ", " + today.getMonth());
-  let todayStr = today.getFullYear() + '년 ' + (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
-  for(var i = 0; i < bodyLength; i++){
-    let createdEventDate = new Date(body[i].created_at);
-    if(today.getTime() <= createdEventDate.getTime()){
-      if('PushEvent' == body[i].type || 'PullRequestEvent' == body[i].type){
-        console.log(todayStr + ' : 1일 1커밋 완료');
-        return true;
-      }
-    }else {
-      console.log(todayStr + ' : 1일 1커밋 미완료');
-      return false;
-    }
-  }
-  return false;
-}
-
 module.exports = {
   existsCommitToday : function(callback){
     request.get(getOptions, function (error, response, body) {
       if(error){
-        console.log('error:', error);
+        console.log('fail, error:', error);
         return;
       }
-      console.log('statusCode:', response && response.statusCode);
+
+      if(!response || 404 == response.statusCode) {
+        console.log('fail, statusCode :', response.statusCode);
+        return;
+      }
+      console.log('complete, statusCode :', response && response.statusCode);
       
-      let bodyLength = Object.keys(body).length;
+      let events = JSON.parse(body);
+      let eventsLength = Object.keys(events).length;
       let today = new Date();
       today = new Date(today.getTime() - (((((today.getHours()) * 60) + today.getMinutes()) * 60) + today.getSeconds()) * 1000);
-      console.log("today : " + today + ", " + today.getDate());
+      console.log("today : " + today + ", " + today.getTime());
       let todayStr = today.getFullYear() + '년 ' + (today.getMonth() + 1) + '월 ' + today.getDate() + '일';
-      for(var i = 0; i < bodyLength; i++){
-        let createdEventDate = new Date(body[i].created_at);
+      
+      for(var i = 0; i < eventsLength; i++) {
+        let createdEventDate = new Date(events[i].created_at);
+        console.log(i + " : " + createdEventDate);
         if(today.getTime() <= createdEventDate.getTime()){
-          if('PushEvent' == body[i].type || 'PullRequestEvent' == body[i].type){
+          if('PushEvent' == events[i].type || 'PullRequestEvent' == events[i].type) {
             console.log(todayStr + ' : 1일 1커밋 완료');
             return true;
           }
         }else {
           console.log(todayStr + ' : 1일 1커밋 미완료');
-          let msg = todayStr + ' daily commit 미완료, 오늘의 커밋을 푸시 해주세요!!';
+          let msg = todayStr + ' 1일 1커밋 미완료, 오늘의 커밋을 푸시 해주세요!!';
           callback(msg);
           return false;
         }
