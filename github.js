@@ -39,7 +39,7 @@ module.exports = {
             return;
           }
         }else {
-          let msg = todayStr + ' 1일 1커밋 미완료';
+          let msg = todayStr + ' 1일 1커밋 미완료, 커밋좀 합시다~ :)';
           console.log(msg + ', 슬랙 메시지 전송 시도');
           callback(msg);
           return;
