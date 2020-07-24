@@ -2,7 +2,8 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 ### config ###
-config/slack-config.json
+config/*
+!config/*-sample.json
 
 ### Node ###
 # Logs
